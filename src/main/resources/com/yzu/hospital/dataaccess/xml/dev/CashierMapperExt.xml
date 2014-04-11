@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzu.hospital.dataaccess.mapper.CashierMapperExt">
+  <resultMap id="CashierBaseResultMap" type="CashierExt">
+    <id column="CASHIER_CASHIERID" jdbcType="INTEGER" property="cashierid" />
+    <result column="CASHIER_NUMBER" jdbcType="VARCHAR" property="number" />
+    <result column="CASHIER_PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="CASHIER_NAME" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  
+  <resultMap type="CashierExt" id="CashierResultMap" extends="CashierBaseResultMap"></resultMap>
+  
+  <sql id="CashierColumn">
+      _Cashier.CashierID AS CASHIER_CASHIERID
+      _Cashier.Number AS CASHIER_NUMBER
+      _Cashier.Password AS CASHIER_PASSWORD
+      _Cashier.Name AS CASHIER_NAME
+  </sql>
+  
+  <select id="getCashierByID" parameterType="java.lang.Integer" resultMap="CashierExt">
+    SELECT
+    <include refid="CashierColumn"/>
+    FROM Cashier AS _Cashier
+    WHERE _Cashier.CashierID = #{cashierID}
+  </select>
+  
+  <insert id="insertCashier" parameterType="CashierExt">
+    <selectKey keyProperty="cashierid" order="BEFORE" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO Cashier (CashierID, Number, Password, Name)
+    VALUES (#{cashierid,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR})
+  </insert>
+  
+</mapper>
+  
