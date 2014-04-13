@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yzu.hospital.dataaccess.mapper.PatientProjectMapperExt">
+    <resultMap id="PatientProjectBaseResultMap" type="PatientProjectExt">
+        <id column="PATIENTPROJECT_PATIENTPROJECTID" property="patientprojectid" jdbcType="INTEGER" />
+        <result column="PATIENTPROJECT_DOCTOR" property="doctor" jdbcType="VARCHAR" />
+        <result column="PATIENTPROJECT_DEPARTMENT" property="department" jdbcType="VARCHAR" />
+        <result column="PATIENTPROJECT_TIMES" property="times" jdbcType="INTEGER" />
+        <result column="PATIENTPROJECT_CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+        <result column="PATIENTPROJECT_MARKFORDELETE" property="markfordelete" jdbcType="TINYINT" />
+        <result column="PATIENTPROJECT_NOTTIMES" property="nottimes" jdbcType="INTEGER" />
+        <result column="PATIENTPROJECT_PROJECTID" property="projectid" jdbcType="INTEGER" />
+        <result column="PATIENTPROJECT_PATIENTID" property="patientid" jdbcType="INTEGER" />
+    </resultMap>
+
+    <resultMap type="PatientProjectExt" id="PatientProjectResultMap" extends="PatientProjectBaseResultMap">
+            <association property="projectExt" resultMap="com.yzu.hospital.dataaccess.mapper.ProjectMapperExt.ProjectResultMap"></association>
+    </resultMap>
+    
+    <sql id="PatientProjectColumn">
+        _PatientProject.PatientProjectID AS PATIENTPROJECT_PATIENTPROJECTID,
+        _PatientProject.Doctor AS PATIENTPROJECT_DOCTOR,
+        _PatientProject.Department AS PATIENTPROJECT_DEPARTMENT,
+        _PatientProject.Times AS PATIENTPROJECT_TIMES,
+        _PatientProject.CreateTime AS PATIENTPROJECT_CREATETIME,
+        _PatientProject.MarkForDelete AS PATIENTPROJECT_MARKFORDELETE,
+        _PatientProject.NotTimes AS PATIENTPROJECT_NOTTIMES,
+        _PatientProject.ProjectID AS PATIENTPROJECT_PROJECTID,
+        _PatientProject.PatientID AS PATIENTPROJECT_PATIENTID
+    </sql>
+    
+    <select id="getPatientProjectByID" resultMap="PatientProjectResultMap" parameterType="java.lang.Integer">
+        SELECT
+            <include refid="PatientProjectColumn" />
+        FROM
+            PatientProject AS _PatientProject
+        WHERE
+            PatientProjectID = #{patientprojectid}
+    </select>
+    
+    <insert id="insertPatientProject" parameterType="PatientProjectExt">
+        <selectKey resultType="java.lang.Integer" keyProperty="patientprojectid" order="BEFORE">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+            PatientProject (
+                Doctor,
+                Department,
+                Times,
+                CreateTime,
+                MarkForDelete,
+                NotTimes,
+                ProjectID,
+                PatientID
+            ) VALUES (
+                #{doctor,jdbcType=VARCHAR},
+                #{department,jdbcType=VARCHAR},
+                #{times,jdbcType=VARCHAR},
+                #{createtime,jdbcType=TIMESTAMP},
+                #{markfordelete,jdbcType=TINYINT},
+                #{nottimes,jdbcType=VARCHAR},
+                #{projectid,jdbcType=INTEGER},
+                #{patientid,jdbcType=INTEGER}
+            )
+    </insert>
+</mapper>

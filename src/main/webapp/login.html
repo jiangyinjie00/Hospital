@@ -1,0 +1,68 @@
+<!doctype html>
+<html ng-app="hospitalApp">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>Hospital</title>
+    
+    <link rel="stylesheet" href="styles/jquery-ui.css"/>
+    <link rel="stylesheet" href="styles/css/angular/angular-ui.css"/>
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/css/awesome/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="styles/app.css"/>
+    
+    <!-- In production use:
+    <script src="scripts/fmApp.min.js"></script>
+    -->
+</head>
+<body class="fleet-body" ng-controller="LoginCtrl">
+  <div class="login-wrapper" ng-init="init()">
+    <div class="login-top">
+      <div id="login-error">用户名或密码错误</div>
+    </div>
+    <form name="loginform" class="login-form" ui-keypress="{enter :'login(loginform.$invalid)'}">
+      <div class="login-header">住院管理系统</div>
+      
+      <div class="login-input">
+        <label class="input-icon" ng-class="icon2Color"><i class="icon-user"></i></label>
+        <input tabindex="2" name="username" type="text" ng-model="user.name" value="住院管理" placeholder="Username">
+      </div>
+      
+      <div class="login-input">
+        <label class="input-icon" ng-class="icon3Color"><i class="icon-unlock-alt"></i></label>
+        <input tabindex="3" name="password" type="password" value="abc123_" ng-model="user.password" placeholder="Password">
+      </div>
+      
+      <div class="btn-wrapper">
+        <div class="btn btn-primary btn-login" tabindex = "4" type="button" ng-click="login(loginform.$invalid)">登录</div>
+      </div>
+      
+    </form>
+    
+    <div class="login-footer">
+      <p>Copyright @2014 YZU, Inc. All Rights Reserved.</p>
+    </div>
+  </div>
+
+<script src="scripts/plugin/jquery-1.9.1.js"></script>
+<script src="scripts/common/CommonUtil.js"></script>
+<script src="scripts/common/Constant.js"></script>
+<script src="scripts/angular/angular.js"></script>
+<script src="scripts/angular/angular-resource.js"></script>
+<script src="scripts/app.js"></script>
+
+<script src="scripts/controllers/LoginCtrl.js"></script>
+
+<script src="scripts/directives/validation.js"></script>
+<script src="scripts/directives/ng-grid.js"></script>
+<script src="scripts/directives/pagination.js"></script>
+<script src="scripts/directives/datepicker.js"></script>
+<script src="scripts/directives/timepicker.js"></script>
+<script src="scripts/services/ResourceService.js"></script>
+<script src="scripts/services/AccountService.js"></script>
+<script src="scripts/services/DialogService.js"></script>
+<script src="scripts/services/dialog.js"></script>
+<script src="scripts/services/transition.js"></script>
+  
+</body>
+</html>

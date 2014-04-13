@@ -1,0 +1,45 @@
+<div class="maxwidth" ng-init="init()">
+    <div id="advance-pay">
+        <div>
+             <label>收费员编号：</label><input type="text" ng-model="currentUser.number" readonly>
+             <label class="left-140">收费员姓名：</label><input type="text" ng-model="currentUser.name" readonly>
+        </div>
+        <div>
+             <label>住院编号：</label><input type="text" ng-model="hospitalInfoNumber"><button ng-click="searchHospitalInfo()">确认</button>
+             <label class="left-80">收费编号：</label><input type="text" ng-model="number" readonly>
+        </div>
+        <div>
+             <label>预交款金额：</label><input type="text" ng-model="money" >
+             <label class="left-140">收费类型：</label>
+             <select id="pay-category">
+                <option>现金</option>
+                <option>银行卡</option>
+             </select>
+        </div>
+    </div>
+    <div id="patient-info">
+        <div>
+             <label>姓名：</label><input type="text" ng-model="patient.name" readonly>
+             <label class="left-140">性别：</label><input type="text" ng-model="patient.sex" readonly>
+        </div>
+        <div>
+            <label>科别：</label><input type="text" ng-model="patient.hospitalInfoExt.department" readonly>
+             <label class="left-140">预交：</label><input type="text" ng-model="patient.advancepay" readonly>
+        </div>
+        <div>
+            <label>已用：</label><input type="text" ng-model="patient.used" readonly>
+             <label class="left-140">补交：</label><input type="text" ng-model="patient.afterPay" readonly>
+        </div>
+        <div>
+            <label>限额：</label><input type="text" readonly>
+            <input type="checkbox" value="社保">
+            <input type="checkbox" value="欠费">
+        </div>
+    </div>
+    
+    <div id="save-advance-pay">
+        <button ng-click="saveStop()">中止</button>
+        <button ng-click="saveAdvancePay()">保存</button>
+    </div>
+     
+</div>

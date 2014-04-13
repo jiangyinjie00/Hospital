@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yzu.hospital.dataaccess.mapper.PatientPrescriptionMapperExt">
+    <resultMap id="PatientPrescriptionBaseResultMap" type="PatientPrescriptionExt">
+        <id column="PATIENTPRESCRIPTION_PATIENTPRESCRIPTIONID" property="patientprescriptionid" jdbcType="INTEGER" />
+        <result column="PATIENTPRESCRIPTION_DOCTOR" property="doctor" jdbcType="VARCHAR" />
+        <result column="PATIENTPRESCRIPTION_DEPARTMENT" property="department" jdbcType="VARCHAR" />
+        <result column="PATIENTPRESCRIPTION_TIMES" property="times" jdbcType="INTEGER" />
+        <result column="PATIENTPRESCRIPTION_CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+        <result column="PATIENTPRESCRIPTION_MARKFORDELETE" property="markfordelete" jdbcType="TINYINT" />
+        <result column="PATIENTPRESCRIPTION_NOTTIMES" property="nottimes" jdbcType="INTEGER" />
+        <result column="PATIENTPRESCRIPTION_PRESCRIPTIONID" property="prescriptionid" jdbcType="INTEGER" />
+        <result column="PATIENTPRESCRIPTION_PATIENTID" property="patientid" jdbcType="INTEGER" />
+    </resultMap>
+
+    <resultMap type="PatientPrescriptionExt" id="PatientPrescriptionResultMap" extends="PatientPrescriptionBaseResultMap">
+        <association property="prescriptionExt" resultMap="com.yzu.hospital.dataaccess.mapper.PrescriptionMapperExt.PrescriptionResultMap"></association>
+    </resultMap>
+
+    <sql id="PatientPrescriptionColumn">
+        _PatientPrescription.PatientPrescriptionID AS PATIENTPRESCRIPTION_PATIENTPRESCRIPTIONID,
+        _PatientPrescription.Doctor AS PATIENTPRESCRIPTION_DOCTOR,
+        _PatientPrescription.Department AS PATIENTPRESCRIPTION_DEPARTMENT,
+        _PatientPrescription.Times AS PATIENTPRESCRIPTION_TIMES,
+        _PatientPrescription.CreateTime AS PATIENTPRESCRIPTION_CREATETIME,
+        _PatientPrescription.MarkForDelete AS PATIENTPRESCRIPTION_MARKFORDELETE,
+        _PatientPrescription.NotTimes AS PATIENTPRESCRIPTION_NOTTIMES,
+        _PatientPrescription.PrescriptionID AS PATIENTPRESCRIPTION_PRESCRIPTIONID,
+        _PatientPrescription.PatientID AS PATIENTPRESCRIPTION_PATIENTID
+    </sql>
+    
+    <select id="getPatientPrescriptionByID" resultMap="PatientPrescriptionResultMap" parameterType="java.lang.Integer">
+        SELECT
+            <include refid="PatientPrescriptionColumn" />
+        FROM
+            PatientPrescription AS _PatientPrescription
+        WHERE
+            PatientPrescriptionID = #{patientprescriptionid}
+    </select>
+    <insert id="insertPatientPrescription" parameterType="PatientPrescriptionExt">
+        <selectKey resultType="java.lang.Integer" keyProperty="patientprescriptionid" order="BEFORE">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+            PatientPrescription (
+                Doctor,
+                Department,
+                Times,
+                CreateTime,
+                MarkForDelete,
+                NotTimes,
+                PrescriptionID,
+                PatientID
+            ) values (
+                #{doctor},
+                #{department},
+                #{times},
+                #{createtime},
+                #{markfordelete},
+                #{nottimes},
+                #{prescriptionid},
+                #{patientid}
+            )
+    </insert>
+</mapper>

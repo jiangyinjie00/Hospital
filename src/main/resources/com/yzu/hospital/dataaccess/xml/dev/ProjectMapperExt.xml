@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yzu.hospital.dataaccess.mapper.ProjectMapperExt" >
+    <resultMap id="ProjectBaseResultMap" type="ProjectExt" >
+        <id column="PROJECT_PROJECTID" property="projectid" jdbcType="INTEGER" />
+        <result column="PROJECT_NUMBER" property="number" jdbcType="VARCHAR" />
+        <result column="PROJECT_NAME" property="name" jdbcType="VARCHAR" />
+        <result column="PROJECT_PRICE" property="price" jdbcType="REAL" />
+        <result column="PROJECT_PAYCOEFFICIENT" property="paycoefficient" jdbcType="REAL" />
+    </resultMap>
+    
+    <resultMap type="ProjectExt" id="ProjectResultMap" extends="ProjectBaseResultMap"></resultMap>
+    
+    <sql id="ProjectColumn" >
+        _Project.ProjectID AS PROJECT_PROJECTID,
+        _Project.Number AS PROJECT_NUMBER,
+        _Project.Name AS PROJECT_NAME,
+        _Project.Price AS PROJECT_PRICE,
+        _Project.PayCoefficient AS PROJECT_PAYCOEFFICIENT
+    </sql>
+    
+    <select id="getProjectByID" resultMap="ProjectResultMap" parameterType="java.lang.Integer" >
+        SELECT 
+            <include refid="ProjectColumn" />
+        FROM
+            Project AS _Project
+        WHERE
+            ProjectID = #{projectid}
+    </select>
+
+    <insert id="insertProject" parameterType="ProjectExt" >
+        <selectKey resultType="java.lang.Integer" keyProperty="projectid" order="BEFORE" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+            Project (
+                Number,
+                Name, 
+                Price,
+                PayCoefficient
+            ) VALUES (
+                #{number,jdbcType=VARCHAR},
+                #{name,jdbcType=VARCHAR}, 
+                #{price,jdbcType=REAL},
+                #{paycoefficient,jdbcType=REAL}
+            )
+    </insert>
+</mapper>

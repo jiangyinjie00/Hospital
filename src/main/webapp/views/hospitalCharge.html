@@ -1,0 +1,34 @@
+<div class="maxwidth" ng-init="init()">
+    <div id="cashier">
+        <label>收费员编号：</label><input type="text" readonly>
+        <label>收费员姓名：</label><input type="text" readonly>
+        <label>收费编号：</label><input type="text" readonly>
+    </div>
+    <div id="patient-cost">
+        <div id="patient">
+            <label>患者编号：</label><input type="text">
+            <button ng-click="searchPatient()">确认</button>
+        </div>
+        <div id="cost">
+            <label>合计：</label><input type="text" readonly>
+            <label>自付：</label><input type="text" readonly>
+            <label>支付：</label><input type="text" >
+            <label>找零：</label><input type="text" >
+        </div>
+    </div>
+    
+    <div id="patient-grid">
+        <div id="patient-info">
+            <label>患者基本信息:</label>
+            <div class="gridStyle" ng-grid="gridPatient"></div>
+        </div>
+        <div id="patient-prescription">
+            <label>处方单</label>
+            <div class="gridStyle" ng-grid="gridPrescriptions"></div>
+        </div>
+        <div id="patient-project">
+            <label>收费项目明细</label>
+            <div class="gridStyle" ng-grid="gridProjects"></div>
+        </div>
+    </div>
+</div>

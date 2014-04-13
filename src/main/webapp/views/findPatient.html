@@ -1,0 +1,15 @@
+<div class="maxwidth" ng-init="init()">
+    <div id="query-patient">
+        <label>姓名：</label>
+        <input ng-model="name" type="text">
+        <span id="query-radio">
+	        <input name="radio1" ng-model="people" type="radio" value="1"> 男
+	        <input name="radio1" ng-model="people" type="radio" value="2"> 女
+	        <input name="radio1" ng-model="people" type="radio" value="3"> 所有
+        </span>
+        <button ng-click="queryPatient()">查询</button>
+    </div>
+    <div id="patients-grid">
+        <div class="gridStyle" ng-grid="gridPatient"></div>
+    </div>
+</div>

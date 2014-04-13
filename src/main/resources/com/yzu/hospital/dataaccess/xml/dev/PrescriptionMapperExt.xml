@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yzu.hospital.dataaccess.mapper.PrescriptionMapperExt" >
+    <resultMap id="PrescriptionBaseResultMap" type="PrescriptionExt" >
+        <id column="PRESCRIPTION_PRESCRIPTIONID" property="prescriptionid" jdbcType="INTEGER" />
+        <result column="PRESCRIPTION_NUMBER" property="number" jdbcType="VARCHAR" />
+        <result column="PRESCRIPTION_NAME" property="name" jdbcType="VARCHAR" />
+        <result column="PRESCRIPTION_PRICE" property="price" jdbcType="REAL" />
+        <result column="PRESCRIPTION_PAYCOEFFICIENT" property="paycoefficient" jdbcType="REAL" />
+        <result column="PRESCRIPTION_UNIT" property="unit" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap type="PrescriptionExt" id="PrescriptionResultMap" extends="PrescriptionBaseResultMap"></resultMap>
+
+    <sql id="PrescriptionColumn" >
+        _Prescription.PrescriptionID AS PRESCRIPTION_PRESCRIPTIONID,
+        _Prescription.Number AS PRESCRIPTION_NUMBER,
+        _Prescription.Name AS PRESCRIPTION_NAME,
+        _Prescription.Price AS PRESCRIPTION_PRICE,
+        _Prescription.PayCoefficient AS PRESCRIPTION_PAYCOEFFICIENT,
+        _Prescription.Unit AS PRESCRIPTION_UNIT
+    </sql>
+    <select id="getPrescriptionByID" resultMap="PrescriptionResultMap" parameterType="java.lang.Integer" >
+        SELECT 
+            <include refid="PrescriptionColumn" />
+        FROM
+            Prescription AS _Prescription
+        WHERE
+            PrescriptionID = #{prescriptionid}
+    </select>
+    
+    <insert id="insertPrescription" parameterType="PrescriptionExt" >
+        <selectKey resultType="java.lang.Integer" keyProperty="prescriptionid" order="BEFORE" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+            Prescription (
+                Number,
+                Name, 
+                Price,
+                PayCoefficient,
+                Unit
+            ) VALUES (
+                #{number,jdbcType=VARCHAR},
+                #{name,jdbcType=VARCHAR}, 
+                #{price,jdbcType=REAL},
+                #{paycoefficient,jdbcType=REAL},
+                #{unit,jdbcType=VARCHAR}
+            )
+    </insert>
+</mapper>

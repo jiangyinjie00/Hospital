@@ -1,6 +1,6 @@
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
 DROP SCHEMA IF EXISTS `Hospital` ;
 CREATE SCHEMA IF NOT EXISTS `Hospital` DEFAULT CHARACTER SET utf8 ;
@@ -30,10 +30,11 @@ CREATE  TABLE IF NOT EXISTS `Hospital`.`Patient` (
   `PatientID` INT(11) NOT NULL AUTO_INCREMENT ,
   `Number` VARCHAR(45) NULL DEFAULT NULL ,
   `Sex` VARCHAR(45) NULL DEFAULT NULL ,
-  `AdvancePay` VARCHAR(45) NULL DEFAULT NULL ,
-  `Used` VARCHAR(45) NULL DEFAULT NULL ,
-  `SelfPay` VARCHAR(45) NULL DEFAULT NULL ,
+  `AdvancePay` FLOAT NULL DEFAULT NULL ,
+  `Used` FLOAT NULL DEFAULT NULL ,
+  `SelfPay` FLOAT NULL DEFAULT NULL ,
   `CreateTime` DATETIME NULL DEFAULT NULL ,
+  `Name` VARCHAR(45) NULL ,
   PRIMARY KEY (`PatientID`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -100,14 +101,14 @@ CREATE  TABLE IF NOT EXISTS `Hospital`.`PatientPrescription` (
   PRIMARY KEY (`PatientPrescriptionID`) ,
   INDEX `fk_PatientPrescription_Prescription1_idx` (`PrescriptionID` ASC) ,
   INDEX `fk_PatientPrescription_Patient1_idx` (`PatientID` ASC) ,
-  CONSTRAINT `fk_PatientPrescription_Prescription1`
-    FOREIGN KEY (`PrescriptionID` )
-    REFERENCES `Hospital`.`Prescription` (`PrescriptionID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_PatientPrescription_Patient1`
     FOREIGN KEY (`PatientID` )
     REFERENCES `Hospital`.`Patient` (`PatientID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_PatientPrescription_Prescription1`
+    FOREIGN KEY (`PrescriptionID` )
+    REFERENCES `Hospital`.`Prescription` (`PrescriptionID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -139,23 +140,23 @@ CREATE  TABLE IF NOT EXISTS `Hospital`.`PatientProject` (
   `PatientProjectID` INT(11) NOT NULL AUTO_INCREMENT ,
   `Doctor` VARCHAR(45) NULL DEFAULT NULL ,
   `Department` VARCHAR(45) NULL DEFAULT NULL ,
-  `Times` VARCHAR(45) NULL DEFAULT NULL ,
+  `Times` INT(4) NULL DEFAULT NULL ,
   `CreateTime` DATETIME NULL DEFAULT NULL ,
   `MarkForDelete` TINYINT(4) NULL DEFAULT '0' ,
-  `NotTimes` VARCHAR(45) NULL DEFAULT NULL ,
+  `NotTimes` INT(4) NULL DEFAULT NULL ,
   `ProjectID` INT(11) NOT NULL ,
   `PatientID` INT(11) NOT NULL ,
   PRIMARY KEY (`PatientProjectID`) ,
   INDEX `fk_PatientProject_Project1_idx` (`ProjectID` ASC) ,
   INDEX `fk_PatientProject_Patient1_idx` (`PatientID` ASC) ,
-  CONSTRAINT `fk_PatientProject_Project1`
-    FOREIGN KEY (`ProjectID` )
-    REFERENCES `Hospital`.`Project` (`ProjectID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_PatientProject_Patient1`
     FOREIGN KEY (`PatientID` )
     REFERENCES `Hospital`.`Patient` (`PatientID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_PatientProject_Project1`
+    FOREIGN KEY (`ProjectID` )
+    REFERENCES `Hospital`.`Project` (`ProjectID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -170,7 +171,7 @@ DROP TABLE IF EXISTS `Hospital`.`Receipt` ;
 CREATE  TABLE IF NOT EXISTS `Hospital`.`Receipt` (
   `ReceiptID` INT(11) NOT NULL AUTO_INCREMENT ,
   `Number` VARCHAR(45) NULL DEFAULT NULL ,
-  `Money` VARCHAR(45) NULL DEFAULT NULL ,
+  `Money` FLOAT NULL DEFAULT NULL ,
   `CreateTime` DATETIME NULL DEFAULT NULL ,
   `CashierID` INT(11) NOT NULL ,
   `PatientID` INT(11) NOT NULL ,
@@ -190,7 +191,6 @@ CREATE  TABLE IF NOT EXISTS `Hospital`.`Receipt` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-USE `Hospital` ;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

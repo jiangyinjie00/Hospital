@@ -8,4 +8,5 @@ import com.yzu.hospital.dataaccess.model.CashierExt;
 public interface CashierMapperExt extends CashierMapper {
     CashierExt getCashierByID(@Param("cashierID") int cashierID);
     int insertCashier(CashierExt cashierExt);
+    CashierExt getCashierByName(@Param("name")String name);
 }

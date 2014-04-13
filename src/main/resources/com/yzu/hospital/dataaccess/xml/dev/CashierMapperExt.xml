@@ -11,17 +11,24 @@
   <resultMap type="CashierExt" id="CashierResultMap" extends="CashierBaseResultMap"></resultMap>
   
   <sql id="CashierColumn">
-      _Cashier.CashierID AS CASHIER_CASHIERID
-      _Cashier.Number AS CASHIER_NUMBER
-      _Cashier.Password AS CASHIER_PASSWORD
+      _Cashier.CashierID AS CASHIER_CASHIERID,
+      _Cashier.Number AS CASHIER_NUMBER,
+      _Cashier.Password AS CASHIER_PASSWORD,
       _Cashier.Name AS CASHIER_NAME
   </sql>
   
-  <select id="getCashierByID" parameterType="java.lang.Integer" resultMap="CashierExt">
+  <select id="getCashierByID" parameterType="java.lang.Integer" resultMap="CashierResultMap">
     SELECT
     <include refid="CashierColumn"/>
     FROM Cashier AS _Cashier
     WHERE _Cashier.CashierID = #{cashierID}
+  </select>
+  
+  <select id="getCashierByName" parameterType="java.lang.String" resultMap="CashierResultMap">
+    SELECT
+    <include refid="CashierColumn"/>
+    FROM Cashier AS _Cashier
+    WHERE _Cashier.Name = #{name}
   </select>
   
   <insert id="insertCashier" parameterType="CashierExt">

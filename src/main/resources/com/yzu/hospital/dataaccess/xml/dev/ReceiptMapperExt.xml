@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yzu.hospital.dataaccess.mapper.ReceiptMapperExt" >
+    <resultMap id="ReceiptBaseResultMap" type="ReceiptExt" >
+        <id column="RECEIPT_RECEIPTID" property="receiptid" jdbcType="INTEGER" />
+        <result column="RECEIPT_NUMBER" property="number" jdbcType="VARCHAR" />
+        <result column="RECEIPT_MONEY" property="money" jdbcType="VARCHAR" />
+        <result column="RECEIPT_CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+        <result column="RECEIPT_CASHIERID" property="cashierid" jdbcType="INTEGER" />
+        <result column="RECEIPT_PATIENTID" property="patientid" jdbcType="INTEGER" />
+    </resultMap>
+
+    <resultMap type="ReceiptExt" id="ReceiptResultMap" extends="ReceiptBaseResultMap"></resultMap>
+
+    <sql id="ReceiptColumn" >
+        _Receipt.ReceiptID AS RECEIPT_RECEIPTID,
+        _Receipt.Number AS RECEIPT_NUMBER,
+        _Receipt.Money AS RECEIPT_MONEY,
+        _Receipt.CreateTime AS RECEIPT_CREATETIME,
+        _Receipt.CashierID AS RECEIPT_CASHIERID,
+        _Receipt.PatientID AS RECEIPT_PATIENTID
+    </sql>
+    
+    <select id="getReceiptByID" resultMap="ReceiptResultMap" parameterType="java.lang.Integer" >
+        SELECT 
+            <include refid="ReceiptColumn" />
+        FROM
+            Receipt AS _Receipt
+        WHERE
+            ReceiptID = #{receiptid}
+    </select>
+
+    <insert id="insertReceipt" parameterType="ReceiptExt" >
+        <selectKey resultType="java.lang.Integer" keyProperty="receiptid" order="BEFORE" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+            Receipt (
+                Number,
+                Money, 
+                CreateTime,
+                CashierID,
+                PatientID
+            ) VALUES (
+                #{number,jdbcType=VARCHAR},
+                #{money,jdbcType=VARCHAR}, 
+                #{createtime,jdbcType=TIMESTAMP},
+                #{cashierid,jdbcType=INTEGER},
+                #{patientid,jdbcType=INTEGER}
+            )
+    </insert>
+
+</mapper>

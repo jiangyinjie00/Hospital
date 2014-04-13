@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yzu.hospital.dataaccess.mapper.HospitalInfoMapperExt">
+    <resultMap id="HospitalInfoBaseResultMap" type="HospitalInfoExt">
+        <id column="HOSPITALINFO_HOSPITALINFOID" property="hospitalinfoid" jdbcType="INTEGER" />
+        <result column="HOSPITALINFO_NUMBER" property="number" jdbcType="VARCHAR" />
+        <result column="HOSPITALINFO_DEPARTMENT" property="department" jdbcType="VARCHAR" />
+        <result column="HOSPITALINFO_ROOM" property="room" jdbcType="VARCHAR" />
+        <result column="HOSPITALINFO_BEDNUMBER" property="bednumber" jdbcType="VARCHAR" />
+        <result column="HOSPITALINFO_DOCTOR" property="doctor" jdbcType="VARCHAR" />
+        <result column="HOSPITALINFO_CREATETIME" property="createtime" jdbcType="VARCHAR" />
+        <result column="HOSPITALINFO_MARKFORDELETE" property="markfordelete" jdbcType="TINYINT" />
+        <result column="HOSPITALINFO_PATIENTID" property="patientid" jdbcType="INTEGER" />
+    </resultMap>
+    
+    <resultMap type="HospitalInfoExt" id="HospitalInfoResultMap" extends="HospitalInfoBaseResultMap"></resultMap>
+    
+    <sql id="HospitalInfoColumn">
+        _HospitalInfo.HospitalInfoID AS HOSPITALINFO_HOSPITALINFOID,
+        _HospitalInfo.Number AS HOSPITALINFO_NUMBER,
+        _HospitalInfo.Department AS HOSPITALINFO_DEPARTMENT,
+        _HospitalInfo.Room AS HOSPITALINFO_ROOM,
+        _HospitalInfo.BedNumber AS HOSPITALINFO_BEDNUMBER,
+        _HospitalInfo.Doctor AS HOSPITALINFO_DOCTOR,
+        _HospitalInfo.CreateTime AS HOSPITALINFO_CREATETIME,
+        _HospitalInfo.MarkForDelete AS HOSPITALINFO_MARKFORDELETE,
+        _HospitalInfo.PatientID AS HOSPITALINFO_PATIENTID
+    </sql>
+    
+    <select id="getHospitalInfoByID" resultMap="HospitalInfoResultMap" parameterType="java.lang.Integer">
+        SELECT
+            <include refid="HospitalInfoColumn" />
+        FROM
+            HospitalInfo AS _HospitalInfo
+        WHERE HospitalInfoID = #{hospitalinfoid}
+    </select>
+    
+    <insert id="insertHospitalInfo" parameterType="HospitalInfoExt">
+        <selectKey resultType="java.lang.Integer" keyProperty="hospitalinfoid" order="BEFORE">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+            HospitalInfo (
+                Number,
+                Department,
+                Room,
+                BedNumber,
+                Doctor,
+                CreateTime,
+                MarkForDelete,
+                PatientID
+            ) VALUES (
+                #{number},
+                #{department},
+                #{room},
+                #{bednumber},
+                #{doctor},
+                #{createtime},
+                #{markfordelete},
+                #{patientid}
+            )
+    </insert>
+</mapper>

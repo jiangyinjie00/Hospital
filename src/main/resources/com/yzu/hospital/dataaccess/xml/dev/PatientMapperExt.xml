@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yzu.hospital.dataaccess.mapper.PatientMapperExt" >
+    <resultMap id="PatientBaseResultMap" type="PatientExt" >
+        <id column="PATIENT_PATIENTID" property="patientid" jdbcType="INTEGER" />
+        <result column="PATIENT_NUMBER" property="number" jdbcType="VARCHAR" />
+        <result column="PATIENT_SEX" property="sex" jdbcType="VARCHAR" />
+        <result column="PATIENT_ADVANCEPAY" property="advancepay" jdbcType="VARCHAR" />
+        <result column="PATIENT_USED" property="used" jdbcType="VARCHAR" />
+        <result column="PATIENT_SELFPAY" property="selfpay" jdbcType="VARCHAR" />
+        <result column="PATIENT_CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+        <result column="PATIENT_NAME" property="name" jdbcType="VARCHAR" />
+    </resultMap>
+  
+    <resultMap type="PatientExt" id="PatientResultMap" extends="PatientBaseResultMap">
+        <association property="patientPrescriptionExts" resultMap="com.yzu.hospital.dataaccess.mapper.PatientPrescriptionMapperExt.PatientPrescriptionResultMap"></association>
+        <association property="patientProjectExts" resultMap="com.yzu.hospital.dataaccess.mapper.PatientProjectMapperExt.PatientProjectResultMap"></association>
+        <association property="hospitalInfoExt" resultMap="com.yzu.hospital.dataaccess.mapper.HospitalInfoMapperExt.HospitalInfoResultMap"></association>
+    </resultMap>
+    
+    <sql id="PatientColumn" >
+        _Patient.PatientID AS PATIENT_PATIENTID,
+        _Patient.Number AS PATIENT_NUMBER,
+        _Patient.Sex AS PATIENT_SEX,
+        _Patient.AdvancePay AS PATIENT_ADVANCEPAY,
+        _Patient.Used AS PATIENT_USED,
+        _Patient.SelfPay AS PATIENT_SELFPAY,
+        _Patient.CreateTime AS PATIENT_CREATETIME,
+        _Patient.Name AS PATIENT_NAME
+    </sql>
+    
+    <select id="getPatientByID" resultMap="PatientResultMap" parameterType="java.lang.Integer" >
+        SELECT 
+            <include refid="PatientColumn" />
+        FROM
+            Patient AS _Patient
+        WHERE
+            PatientID = #{patientid}
+    </select>
+    
+    <select id="getPatientByNumber" resultMap="PatientResultMap" parameterType="java.lang.String" >
+        SELECT 
+            <include refid="PatientColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.HospitalInfoMapperExt.HospitalInfoColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.PatientPrescriptionMapperExt.PatientPrescriptionColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.PrescriptionMapperExt.PrescriptionColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.PatientProjectMapperExt.PatientProjectColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.ProjectMapperExt.ProjectColumn" />
+        FROM
+            Patient AS _Patient
+            LEFT JOIN HospitalInfo AS _HospitalInfo ON _Patient.PatientID = _HospitalInfo.PatientID
+            LEFT JOIN PatientPrescription AS _PatientPrescription ON _Patient.PatientID = _PatientPrescription.PatientID
+            LEFT JOIN Prescription AS _Prescription ON _PatientPrescription.PrescriptionID = _Prescription.PrescriptionID
+            LEFT JOIN PatientProject AS _PatientProject ON _Patient.PatientID = _PatientProject.PatientID
+            LEFT JOIN Project AS _Project ON _PatientProject.ProjectID = _Project.ProjectID
+        WHERE
+            _Patient.Number = #{number}
+    </select>
+    
+    <select id="getPatientByHospitalInfoNumber" resultMap="PatientResultMap" parameterType="java.lang.String" >
+        SELECT 
+            <include refid="PatientColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.HospitalInfoMapperExt.HospitalInfoColumn" />
+        FROM
+            Patient AS _Patient
+            LEFT JOIN HospitalInfo AS _HospitalInfo ON _Patient.PatientID = _HospitalInfo.PatientID
+        WHERE
+            _HospitalInfo.Number = #{number}
+    </select>
+    
+    <select id="queryPatientByName" resultMap="PatientResultMap" parameterType="map" >
+        SELECT 
+            <include refid="PatientColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.HospitalInfoMapperExt.HospitalInfoColumn" />
+        FROM
+            Patient AS _Patient
+            LEFT JOIN HospitalInfo AS _HospitalInfo ON _Patient.PatientID = _HospitalInfo.PatientID
+        WHERE
+            _Patient.name = #{name}
+        <if test="condition != null">
+            AND _Patient.sex = #{condition}
+        </if>
+    </select>
+  
+    <insert id="insertPatient" parameterType="PatientExt" >
+        <selectKey resultType="java.lang.Integer" keyProperty="patientid" order="BEFORE" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+            Patient (
+                Number,
+                Sex, 
+                AdvancePay,
+                Used,
+                SelfPay, 
+                CreateTime,
+                Name
+            ) VALUES (
+                #{number},
+                #{sex}, 
+                #{advancepay},
+                #{used},
+                #{selfpay}, 
+                #{createtime},
+                #{name}
+            )
+     </insert>
+     
+     <update id="updateAdvancePay">
+         UPDATE Patient AS _Patient 
+         SET _Patient.AdvancePay = _Patient.AdvancePay + #{money}
+         WHERE _Patient.PatientID = #{patientID}
+     </update>
+</mapper>
