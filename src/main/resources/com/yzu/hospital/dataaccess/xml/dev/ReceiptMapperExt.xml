@@ -10,7 +10,10 @@
         <result column="RECEIPT_PATIENTID" property="patientid" jdbcType="INTEGER" />
     </resultMap>
 
-    <resultMap type="ReceiptExt" id="ReceiptResultMap" extends="ReceiptBaseResultMap"></resultMap>
+    <resultMap type="ReceiptExt" id="ReceiptResultMap" extends="ReceiptBaseResultMap">
+        <association property="patientExt" resultMap="com.yzu.hospital.dataaccess.mapper.PatientMapperExt.PatientResultMap"></association>
+        <association property="cashierExt" resultMap="com.yzu.hospital.dataaccess.mapper.CashierMapperExt.CashierResultMap"></association>
+    </resultMap>
 
     <sql id="ReceiptColumn" >
         _Receipt.ReceiptID AS RECEIPT_RECEIPTID,
@@ -28,6 +31,24 @@
             Receipt AS _Receipt
         WHERE
             ReceiptID = #{receiptid}
+    </select>
+    
+    <select id="getReceiptByCashierNumber" resultMap="ReceiptResultMap" parameterType="map" >
+        SELECT 
+            SUM(_Receipt.Money)
+            <include refid="ReceiptColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.PatientMapperExt.PatientColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.HospitalInfoMapperExt.HospitalInfoColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.CashierMapperExt.CashierColumn" />
+        FROM
+            Receipt AS _Receipt
+            LEFT JOIN Patient AS _Patient ON _Receipt.PatientID = _Patient.PatientID
+            LEFT JOIN HospitalInfo AS _HospitalInfo ON _Patient.PatientID = HospitalInfo.PatientID
+            LEFT JOIN Cashier AS _Cashier ON _Receipt.CashierID = Cashier.CashierID
+        WHERE
+            _Cashier.Number = #{number} 
+            AND _Receipt.CreateTime BETWEEN #{startTime} AND #{endTime}
+        GROUP BY _Receipt.PatientID
     </select>
 
     <insert id="insertReceipt" parameterType="ReceiptExt" >

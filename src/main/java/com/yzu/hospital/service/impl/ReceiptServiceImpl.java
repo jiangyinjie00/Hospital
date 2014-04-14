@@ -1,6 +1,7 @@
 package com.yzu.hospital.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,11 @@ public class ReceiptServiceImpl implements ReceiptService {
         int receiptID = receiptMapperExt.insertReceipt(receiptExt);
         patientMapperExt.updateAdvancePay(receiptExt.getMoney(), receiptExt.getPatientid());
         return receiptID;
+    }
+
+    @Override
+    public List<ReceiptExt> getReceiptByCashierNumber(String number, String startTime,
+            String endTime) {
+        return receiptMapperExt.getReceiptByCashierNumber(number, startTime, endTime);
     }
 }

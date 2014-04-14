@@ -1,0 +1,28 @@
+<div class="maxwidth" ng-init="init()">
+<div class="width-500">
+    <div class="left">
+        <div id="cashier-name">
+            <label>收费员编号：</label><input type="text" ng-model="number">
+            <label>收费员姓名：</label><input type="text" ng-model="name" readonly>
+        </div>
+        <div id="cashier-find">
+            <label>合计金额：</label><input type="text" ng-model="allMoney" readonly>
+            <label>查询时间：</label><input type="text" ng-model="time" hospital-datepicker>
+        </div>
+        
+        <div id="cashier-find-list">
+            <label>患者基本信息:</label>
+            <div class="grid-cashier-list" ng-grid="gridPatient"></div>
+        </div>
+    </div>
+    
+    <div class="right right-cashier-button">
+        <div>
+            <ul>
+                <li><button ng-click="queryDayList()">查询</button></li>
+                <li><button>退出</button></li>
+            </ul>
+        </div>
+    </div>
+    </div>
+</div>

@@ -12,6 +12,7 @@ var RestfulAPI = {
         "LOGOUT" : "user/logout",
         "USER" : "user",
         "RECEIPT_SAVE" : "receipt/save",
+        "RECEIPT_GET_RECEIPT_NUMBER" : "receipt/getReceiptByNumber",
         "USER_SAVE_INFORMATION" : "user/saveInfo",
         "USER_SAVE_EXPERIENCE" : "user/saveExperience",
         "USER_SAVE_EDUCATION" : "user/saveEducation",

@@ -845,3 +845,63 @@ body {
 	width: 600px;
 	height: 400px;
 }
+
+.right-button {
+	margin-top: 100px;
+}
+
+.right-button li {
+	margin-top: 40px;
+}
+
+.right-button button {
+	background-color: #F77A13;
+}
+
+.grid-prescriptions {
+	border: 1px solid rgb(212, 212, 212);
+    height: 170px;
+    width: 500px;
+}
+
+.width-700 {
+	width: 700px;
+}
+
+#prescription-detail {
+	width: 490px;
+	height: 100px;
+}
+
+#cashier-find {
+	margin-top: 20px;
+}
+
+#cashier-find label, #cashier-name label{
+	width: 100px;
+	display: inline-block;
+}
+#cashier-find input, #cashier-name input{
+	width: 120px;
+}
+
+
+.grid-cashier-list {
+	width: 480px;
+}
+
+.width-500 {
+	width: 600px;
+}
+
+.right-cashier-button {
+	margin-top: 20px;
+}
+
+.right-cashier-button li {
+    margin-top: 40px;
+}
+
+.right-cashier-button button {
+    background-color: #F77A13;
+}

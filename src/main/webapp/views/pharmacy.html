@@ -1,0 +1,44 @@
+<div class="maxwidth" ng-init="init()">
+    <div class="width-700">
+    <div class="left">
+        <div id="cashier">
+            <label>收费员编号：</label><input type="text" ng-model="currentUser.number" readonly>
+            <label>收费员姓名：</label><input type="text" ng-model="currentUser.name" readonly>
+        </div>
+        <div id="patient-cost">
+            <div id="patient">
+                <label>患者编号：</label><input type="text">
+                <button ng-click="searchPatient()">确认</button>
+            </div>
+        </div>
+        
+        <div id="patient-grid1">
+            <div id="patient-info1">
+                <label>未完成的处方编号：</label>
+                <div  class="grid-prescriptions" ng-grid="gridPrescriptions"></div>
+            </div>
+            <div id="patient-prescription">
+                <label>处方单药品明细：</label>
+                <div class="grid-prescriptions" ng-grid="gridPrescriptionDetails"></div>
+            </div>
+        </div>
+        
+        <div>
+            <label>出库信息：</label>
+            <textarea id="prescription-detail" ng-model="detail"></textarea>
+        </div>
+    </div>
+    
+    <div class="right right-button">
+        <div>
+            <ul>
+                <li><button>中止取药</button></li>
+                <li><button>保存取药</button></li>
+                <li><button>查看库存</button></li>
+                <li><a href="#/queryPatient"><button>患者查询</button></a></li>
+                <li><button>退出药房</button></li>
+            </ul>
+        </div>
+    </div>
+    </div>
+</div>

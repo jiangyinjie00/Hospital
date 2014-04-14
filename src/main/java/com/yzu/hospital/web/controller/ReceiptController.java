@@ -1,5 +1,7 @@
 package com.yzu.hospital.web.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,6 +20,7 @@ import com.yzu.hospital.common.Logger;
 import com.yzu.hospital.common.LoggerFactory;
 import com.yzu.hospital.dataaccess.model.ReceiptExt;
 import com.yzu.hospital.service.ReceiptService;
+import com.yzu.hospital.web.model.QueryMoney;
 
 @Controller
 public class ReceiptController {
@@ -32,6 +35,22 @@ public class ReceiptController {
             @RequestBody ReceiptExt receiptExt) {
         try {
             int receiptID = receiptService.insertReceipt(receiptExt);
+            response.setStatus(IHttpStateCode.OK);
+        } catch (Exception exception) {
+            HandleWebException.handleWebException(exception, logger);
+        }
+        return new JsonResponse<Integer>(Constant.STATUS_SUCCESS);
+    }
+
+    @RequestMapping(value = "/receipt/getReceiptByNumber", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    JsonResponse<Integer> saveReceipt(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody QueryMoney queryMoney) {
+        String startTime = queryMoney.getTime();
+        String endTime = startTime + " 23:59:59";
+        String number = queryMoney.getNumber();
+        try {
+            List<ReceiptExt> receiptExt = receiptService.getReceiptByCashierNumber(number, startTime, endTime);
             response.setStatus(IHttpStateCode.OK);
         } catch (Exception exception) {
             HandleWebException.handleWebException(exception, logger);

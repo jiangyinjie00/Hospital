@@ -17,15 +17,15 @@ angular.module('hospitalApp').config([ '$routeProvider', '$httpProvider', functi
     }).when('/queryPatient', {
         templateUrl : 'views/findPatient.html',
         controller : 'FindPatientCtrl'
-    }).when('/resume', {
-        templateUrl : 'views/resume.html',
-        controller : 'ResumeCtrl'
-    }).when('/jobs', {
-    	templateUrl : 'views/hospital.html',
-    	controller : 'RecruitCtrl'
-    }).when('/addRecruit', {
-    	templateUrl : 'views/addRecruit.html',
-    	controller : 'RecruitCtrl'
+    }).when('/pharmacy', {
+        templateUrl : 'views/pharmacy.html',
+        controller : 'PharmacyCtrl'
+    }).when('/leaveHospital', {
+    	templateUrl : 'views/leaveHospital.html',
+    	controller : 'HospitalChargeCtrl'
+    }).when('/dayList', {
+    	templateUrl : 'views/dayList.html',
+    	controller : 'DayListCtrl'
     }).when('/backStage', {
 	templateUrl : 'views/backStage.html',
 	controller : 'BackStageCtrl'
