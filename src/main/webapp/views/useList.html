@@ -1,0 +1,41 @@
+<div class="maxwidth" ng-init="init()">
+    <div>
+        <div id="patient">
+                <label>编号住院：</label><input ng-model="number" type="text">
+                <button ng-click="searchPatient()">确认</button>
+        </div>
+        <span id="query-radio">
+            <input name="radio1" ng-model="people" type="radio" value="0"> 未结算
+            <input name="radio1" ng-model="people" type="radio" value="1"> 结算
+            <input name="radio1" ng-model="people" type="radio" value="2"> 所有
+        </span>
+    </div>
+    <div class="use-list-width">
+        <div class="left">
+            <div id="patient-grid">
+                <div id="patient-prescription">
+                    <label>处方单</label>
+                    <div class="use-list-grid" ng-grid="gridPrescriptions"></div>
+                </div>
+                <div id="patient-project">
+                    <label>收费项目明细</label>
+                    <div class="use-list-grid" ng-grid="gridProjects"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right right-button">
+            <div id="cashier">
+            <div><label>患者信息：</label></div>
+            <div>
+                <label>姓名：</label><input type="text" ng-model="patient.name" readonly></div>
+                <div><label>性别：</label><input type="text" ng-model="patient.sex" readonly> </div>
+               <div> <label>科别：</label><input type="text" ng-model="patient.hospitalInfoExt.department" readonly></div>
+               <div> <label>预交：</label><input type="text" ng-model="patient.advancepay" readonly></div>
+               <div> <label>已用：</label><input type="text" ng-model="patient.used" readonly></div>
+                <div><label>补交：</label><input type="text" ng-model="patient.used" readonly></div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -45,4 +45,9 @@ public class PatientServiceImpl implements PatientService {
         }
         return patientMapperExt.queryPatientByName(name, condition);
     }
+
+    @Override
+    public PatientExt queryPatientExtByNumber(String number, int condition) {
+        return patientMapperExt.queryPatientExtByNumber(number, condition);
+    }
 }

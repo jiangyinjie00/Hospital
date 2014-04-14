@@ -8,4 +8,6 @@ public interface CashierService {
     int insertCashier(CashierExt cashierExt);
 
     CashierExt login(String userName, String password);
+
+    void changePassword(String number, String password);
 }

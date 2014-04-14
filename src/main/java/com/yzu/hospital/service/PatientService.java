@@ -14,4 +14,6 @@ public interface PatientService {
     PatientExt getPatientByHospitalInfoNumber(String number);
 
     List<PatientExt> queryPatientByName(String name, int people);
+
+    PatientExt queryPatientExtByNumber(String number, int condition);
 }

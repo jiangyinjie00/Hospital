@@ -6,6 +6,7 @@ var StatusCode = {
 
 var RestfulAPI = {
         "PATIENT_PATIENTINFO" : "patient/patientInfo",
+        "PATIENT_PATIENTINFO_HOSPITAL" : "patient/patientInfoByNumber",
         "PATIENT_PATIENTINFO_EASY" : "patient/patientInfoEasy",
         "PATIENT_PATIENTINFO_EASY_Name" : "patient/patientInfoEasyName",
         "LOGIN" : "user/login",

@@ -57,6 +57,29 @@
             _Patient.Number = #{number}
     </select>
     
+    <select id="queryPatientExtByNumber" resultMap="PatientResultMap" parameterType="map" >
+        SELECT 
+            <include refid="PatientColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.HospitalInfoMapperExt.HospitalInfoColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.PatientPrescriptionMapperExt.PatientPrescriptionColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.PrescriptionMapperExt.PrescriptionColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.PatientProjectMapperExt.PatientProjectColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.ProjectMapperExt.ProjectColumn" />
+        FROM
+            Patient AS _Patient
+            LEFT JOIN HospitalInfo AS _HospitalInfo ON _Patient.PatientID = _HospitalInfo.PatientID
+            LEFT JOIN PatientPrescription AS _PatientPrescription ON _Patient.PatientID = _PatientPrescription.PatientID
+            LEFT JOIN Prescription AS _Prescription ON _PatientPrescription.PrescriptionID = _Prescription.PrescriptionID
+            LEFT JOIN PatientProject AS _PatientProject ON _Patient.PatientID = _PatientProject.PatientID
+            LEFT JOIN Project AS _Project ON _PatientProject.ProjectID = _Project.ProjectID
+        WHERE
+            _HospitalInfo.Number = #{number}
+            <if test="condition != 2">
+                AND _PatientPrescription.MarkForDelete = #{condition}
+                AND _PatientProject.MarkForDelete = #{condition}
+            </if>
+    </select>
+    
     <select id="getPatientByHospitalInfoNumber" resultMap="PatientResultMap" parameterType="java.lang.String" >
         SELECT 
             <include refid="PatientColumn" />,

@@ -31,6 +31,12 @@
     WHERE _Cashier.Name = #{name}
   </select>
   
+  <update id="changePassword">
+    UPDATE Cashier AS _Cashier 
+    SET _Cashier.password = #{password}
+    WHERE _Cashier.number = #{number}
+  </update>
+  
   <insert id="insertCashier" parameterType="CashierExt">
     <selectKey keyProperty="cashierid" order="BEFORE" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()

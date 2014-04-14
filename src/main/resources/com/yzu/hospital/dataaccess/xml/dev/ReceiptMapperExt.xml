@@ -4,13 +4,14 @@
     <resultMap id="ReceiptBaseResultMap" type="ReceiptExt" >
         <id column="RECEIPT_RECEIPTID" property="receiptid" jdbcType="INTEGER" />
         <result column="RECEIPT_NUMBER" property="number" jdbcType="VARCHAR" />
-        <result column="RECEIPT_MONEY" property="money" jdbcType="VARCHAR" />
+        <result column="RECEIPT_MONEY" property="money" jdbcType="REAL" />
         <result column="RECEIPT_CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
         <result column="RECEIPT_CASHIERID" property="cashierid" jdbcType="INTEGER" />
         <result column="RECEIPT_PATIENTID" property="patientid" jdbcType="INTEGER" />
     </resultMap>
 
     <resultMap type="ReceiptExt" id="ReceiptResultMap" extends="ReceiptBaseResultMap">
+        <result column="RECEIPT_PERSONALTOTAL" property="personalTotal" jdbcType="REAL" />
         <association property="patientExt" resultMap="com.yzu.hospital.dataaccess.mapper.PatientMapperExt.PatientResultMap"></association>
         <association property="cashierExt" resultMap="com.yzu.hospital.dataaccess.mapper.CashierMapperExt.CashierResultMap"></association>
     </resultMap>
@@ -35,7 +36,7 @@
     
     <select id="getReceiptByCashierNumber" resultMap="ReceiptResultMap" parameterType="map" >
         SELECT 
-            SUM(_Receipt.Money)
+            SUM(_Receipt.Money) AS RECEIPT_PERSONALTOTAL,
             <include refid="ReceiptColumn" />,
             <include refid="com.yzu.hospital.dataaccess.mapper.PatientMapperExt.PatientColumn" />,
             <include refid="com.yzu.hospital.dataaccess.mapper.HospitalInfoMapperExt.HospitalInfoColumn" />,
@@ -43,8 +44,8 @@
         FROM
             Receipt AS _Receipt
             LEFT JOIN Patient AS _Patient ON _Receipt.PatientID = _Patient.PatientID
-            LEFT JOIN HospitalInfo AS _HospitalInfo ON _Patient.PatientID = HospitalInfo.PatientID
-            LEFT JOIN Cashier AS _Cashier ON _Receipt.CashierID = Cashier.CashierID
+            LEFT JOIN HospitalInfo AS _HospitalInfo ON _Patient.PatientID = _HospitalInfo.PatientID
+            LEFT JOIN Cashier AS _Cashier ON _Receipt.CashierID = _Cashier.CashierID
         WHERE
             _Cashier.Number = #{number} 
             AND _Receipt.CreateTime BETWEEN #{startTime} AND #{endTime}

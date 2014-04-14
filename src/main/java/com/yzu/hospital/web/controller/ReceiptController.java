@@ -44,18 +44,19 @@ public class ReceiptController {
 
     @RequestMapping(value = "/receipt/getReceiptByNumber", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
-    JsonResponse<Integer> saveReceipt(HttpServletRequest request, HttpServletResponse response,
+    JsonResponse<List<ReceiptExt>> saveReceipt(HttpServletRequest request, HttpServletResponse response,
             @RequestBody QueryMoney queryMoney) {
         String startTime = queryMoney.getTime();
         String endTime = startTime + " 23:59:59";
         String number = queryMoney.getNumber();
+        List<ReceiptExt> receiptExts = null;
         try {
-            List<ReceiptExt> receiptExt = receiptService.getReceiptByCashierNumber(number, startTime, endTime);
+            receiptExts = receiptService.getReceiptByCashierNumber(number, startTime, endTime);
             response.setStatus(IHttpStateCode.OK);
         } catch (Exception exception) {
             HandleWebException.handleWebException(exception, logger);
         }
-        return new JsonResponse<Integer>(Constant.STATUS_SUCCESS);
+        return new JsonResponse<List<ReceiptExt>>(Constant.STATUS_SUCCESS, receiptExts);
     }
 
 }

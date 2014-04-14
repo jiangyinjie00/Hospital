@@ -9,46 +9,50 @@ angular.module('hospitalApp.controller').controller('DayListCtrl', [ '$scope', '
     	condition.number = $scope.number;
     	condition.time = $scope.time;
     	restClient.post(RestfulAPI.RECEIPT_GET_RECEIPT_NUMBER, {}, condition).then(function() {
-            $scope.patient = restClient.getResponse();
-        });
+            $scope.dayList = restClient.getResponse();
+            $scope.allMoney = 0;
+            for(var index in $scope.dayList) {
+            	$scope.allMoney += $scope.dayList[index].personalTotal;
+            }
+        });	
     };
     
     $scope.gridPatient = {
-    		data : 'patient',
+    		data : 'dayList',
     		enableSorting: false,
     		columnDefs : [],
     };
     
     $scope.gridPatient.columnDefs = [
          {
-             field: 'number',
-             displayName: '患者编号',
+             field: 'patientExt.name',
+             displayName: '姓名',
              //headerCellTemplate: $scope.headerCellTemplate,
-             width:150
+             width:100
          },
          {
-        	 field: 'hospitalInfoExt.number',
-        	 displayName: '住院编号',
+        	 field: 'patientExt.sex',
+        	 displayName: '性别',
         	 //headerCellTemplate: $scope.headerCellTemplate,
-        	 width:150
+        	 width:70
          },
          {
-        	 field: 'name',
-        	 displayName: '姓名',
+        	 field: 'patientExt.hospitalInfoExt.department',
+        	 displayName: '科室',
         	 //headerCellTemplate: $scope.headerCellTemplate,
-        	 width:100
+        	 width:70
          },
          {
-             field: 'sex',
-             displayName: "性别",
+             field: 'patientExt.hospitalInfoExt.number',
+             displayName: "住院编号",
              //headerCellTemplate: $scope.headerCellTemplate,
-             width:80
+             width:140
          },
          {
-             field: 'hospitalInfoExt.department',
-             displayName: "所在科室",
+             field: 'personalTotal',
+             displayName: "收入金额",
              //headerCellTemplate: $scope.headerCellTemplate,
-             width:120
+             width:100
          },
          ];
     

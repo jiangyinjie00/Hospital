@@ -26,12 +26,12 @@ angular.module('hospitalApp').config([ '$routeProvider', '$httpProvider', functi
     }).when('/dayList', {
     	templateUrl : 'views/dayList.html',
     	controller : 'DayListCtrl'
-    }).when('/backStage', {
-	templateUrl : 'views/backStage.html',
-	controller : 'BackStageCtrl'
-    }).when('/resume/:userID', {
-        templateUrl : 'views/resumeDetail.html',
-        controller : 'ResumeCtrl'
+    }).when('/useList', {
+	templateUrl : 'views/useList.html',
+	controller : 'UseListCtrl'
+    }).when('/changePassword', {
+        templateUrl : 'views/changePassword.html',
+        controller : 'ChangePasswordCtrl'
     }).when('/request/:jobRequestID', {
 		templateUrl : 'views/requestDetail.html',
 		controller : 'RequestCtrl'

@@ -35,4 +35,10 @@ public class CashierServiceImpl implements CashierService {
         throw new ArgumentException(errorMessage, ErrorCode.USER_NAME_PASSWORD_ERROR);
     }
 
+    @Override
+    public void changePassword(String number, String password) {
+        cashierMapperExt.changePassword(number, password);
+
+    }
+
 }

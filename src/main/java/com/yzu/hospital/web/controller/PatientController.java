@@ -43,6 +43,22 @@ public class PatientController {
         return new JsonResponse<PatientExt>(Constant.STATUS_SUCCESS, patientExt);
     }
 
+    @RequestMapping(value = "/patient/patientInfoByNumber", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    JsonResponse<PatientExt> getPatientExtByHospitalInfoNumber(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody QueryPatient queryPatient) {
+        String number = queryPatient.getName();
+        int condition = queryPatient.getPeople();
+        PatientExt patientExt = null;
+        try {
+            patientExt = patientService.queryPatientExtByNumber(number, condition);
+            response.setStatus(IHttpStateCode.OK);
+        } catch (Exception exception) {
+            HandleWebException.handleWebException(exception, logger);
+        }
+        return new JsonResponse<PatientExt>(Constant.STATUS_SUCCESS, patientExt);
+    }
+
     @RequestMapping(value = "/patient/patientInfoEasy", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     JsonResponse<PatientExt> getPatientByHospitalInfoNumber(HttpServletRequest request, HttpServletResponse response,

@@ -44,6 +44,31 @@ public class UserController {
         return new JsonResponse<Integer>(Constant.STATUS_SUCCESS);
     }
 
+    @RequestMapping(value = "/user/changePassword", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    JsonResponse<Integer> changePassword(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody CashierExt cashierExt) {
+        String number = cashierExt.getNumber();
+        String password = cashierExt.getPassword();
+        try {
+            cashierService.changePassword(number, password);
+            HttpSession session = request.getSession();
+            session.setAttribute("USER", cashierExt);
+            response.setStatus(IHttpStateCode.OK);
+        } catch (Exception exception) {
+            HandleWebException.handleWebException(exception, logger);
+        }
+        return new JsonResponse<Integer>(Constant.STATUS_SUCCESS);
+    }
+
+    @RequestMapping(value = "/user/logout", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    JsonResponse<Integer> login(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return new JsonResponse<Integer>(Constant.STATUS_SUCCESS);
+    }
+
     @RequestMapping(value = "/user/logout", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     JsonResponse<Integer> logout(HttpServletRequest request, HttpServletResponse response) {

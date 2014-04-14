@@ -19,4 +19,6 @@ public interface PatientMapperExt extends PatientMapper {
     void updateAdvancePay(@Param("money")float money, @Param("patientID")int patientID);
 
     List<PatientExt> queryPatientByName(@Param("name")String name, @Param("condition")String condition);
+
+    PatientExt queryPatientExtByNumber(@Param("number")String number, @Param("condition")int condition);
 }
