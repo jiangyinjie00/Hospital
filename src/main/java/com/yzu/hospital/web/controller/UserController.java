@@ -53,19 +53,13 @@ public class UserController {
         try {
             cashierService.changePassword(number, password);
             HttpSession session = request.getSession();
-            session.setAttribute("USER", cashierExt);
+            CashierExt cashier = (CashierExt) session.getAttribute("USER");
+            cashier.setPassword(password);
+            session.setAttribute("USER", cashier);
             response.setStatus(IHttpStateCode.OK);
         } catch (Exception exception) {
             HandleWebException.handleWebException(exception, logger);
         }
-        return new JsonResponse<Integer>(Constant.STATUS_SUCCESS);
-    }
-
-    @RequestMapping(value = "/user/logout", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody
-    JsonResponse<Integer> login(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        session.invalidate();
         return new JsonResponse<Integer>(Constant.STATUS_SUCCESS);
     }
 

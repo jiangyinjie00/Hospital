@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yzu.hospital.dataaccess.mapper.PatientMapperExt;
+import com.yzu.hospital.dataaccess.mapper.PatientPrescriptionMapperExt;
+import com.yzu.hospital.dataaccess.mapper.PatientProjectMapperExt;
 import com.yzu.hospital.dataaccess.model.PatientExt;
 import com.yzu.hospital.service.PatientService;
 
@@ -13,6 +15,12 @@ import com.yzu.hospital.service.PatientService;
 public class PatientServiceImpl implements PatientService {
     @Autowired
     private PatientMapperExt patientMapperExt;
+
+    @Autowired
+    private PatientPrescriptionMapperExt patientPrescriptionMapperExt;
+
+    @Autowired
+    private PatientProjectMapperExt patientProjectMapperExt;
 
     @Override
     public int insertPatient(PatientExt patientExt) {
@@ -49,5 +57,23 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientExt queryPatientExtByNumber(String number, int condition) {
         return patientMapperExt.queryPatientExtByNumber(number, condition);
+    }
+
+
+    @Override
+    public PatientExt getPatientMedicineByNumber(String number) {
+
+        return patientMapperExt.getPatientMedicineByNumber(number);
+    }
+
+    @Override
+    public void getMedicine(int[] prescriptionIDs) {
+        patientPrescriptionMapperExt.updateMedicine(prescriptionIDs);
+    }
+
+    @Override
+    public void deletePatientByID(int patientID) {
+        patientMapperExt.markForDelete(patientID);
+
     }
 }

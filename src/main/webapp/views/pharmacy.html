@@ -7,7 +7,7 @@
         </div>
         <div id="patient-cost">
             <div id="patient">
-                <label>患者编号：</label><input type="text">
+                <label>患者编号：</label><input ng-model="number" type="text">
                 <button ng-click="searchPatient()">确认</button>
             </div>
         </div>
@@ -32,11 +32,11 @@
     <div class="right right-button">
         <div>
             <ul>
-                <li><button>中止取药</button></li>
-                <li><button>保存取药</button></li>
+                <li><button ng-click="clearText()">中止取药</button></li>
+                <li><button ng-click="updateMedicine()">保存取药</button></li>
                 <li><button>查看库存</button></li>
                 <li><a href="#/queryPatient"><button>患者查询</button></a></li>
-                <li><button>退出药房</button></li>
+                <li><a href="/Hospital"><button>退出药房</button></a></li>
             </ul>
         </div>
     </div>

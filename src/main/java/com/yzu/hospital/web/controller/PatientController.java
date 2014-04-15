@@ -20,7 +20,9 @@ import com.yzu.hospital.common.Logger;
 import com.yzu.hospital.common.LoggerFactory;
 import com.yzu.hospital.dataaccess.model.PatientExt;
 import com.yzu.hospital.service.PatientService;
+import com.yzu.hospital.web.converter.PatientConverter;
 import com.yzu.hospital.web.model.QueryPatient;
+import com.yzu.hospital.web.model.SaveMedicine;
 
 @Controller
 public class PatientController {
@@ -40,7 +42,21 @@ public class PatientController {
         } catch (Exception exception) {
             HandleWebException.handleWebException(exception, logger);
         }
-        return new JsonResponse<PatientExt>(Constant.STATUS_SUCCESS, patientExt);
+        return new JsonResponse<PatientExt>(Constant.STATUS_SUCCESS, PatientConverter.converterPatient(patientExt));
+    }
+
+    @RequestMapping(value = "/patient/patientInfoMedicine", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    JsonResponse<PatientExt> getPatientMedicineByNumber(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody String number) {
+        PatientExt patientExt = null;
+        try {
+            patientExt = patientService.getPatientMedicineByNumber(number);
+            response.setStatus(IHttpStateCode.OK);
+        } catch (Exception exception) {
+            HandleWebException.handleWebException(exception, logger);
+        }
+        return new JsonResponse<PatientExt>(Constant.STATUS_SUCCESS, PatientConverter.converterPatient(patientExt));
     }
 
     @RequestMapping(value = "/patient/patientInfoByNumber", method = RequestMethod.POST, produces = "application/json")
@@ -56,7 +72,7 @@ public class PatientController {
         } catch (Exception exception) {
             HandleWebException.handleWebException(exception, logger);
         }
-        return new JsonResponse<PatientExt>(Constant.STATUS_SUCCESS, patientExt);
+        return new JsonResponse<PatientExt>(Constant.STATUS_SUCCESS, PatientConverter.converterPatient(patientExt));
     }
 
     @RequestMapping(value = "/patient/patientInfoEasy", method = RequestMethod.POST, produces = "application/json")
@@ -70,7 +86,7 @@ public class PatientController {
         } catch (Exception exception) {
             HandleWebException.handleWebException(exception, logger);
         }
-        return new JsonResponse<PatientExt>(Constant.STATUS_SUCCESS, patientExt);
+        return new JsonResponse<PatientExt>(Constant.STATUS_SUCCESS, PatientConverter.converterPatient(patientExt));
     }
 
     @RequestMapping(value = "/patient/patientInfoEasyName", method = RequestMethod.POST, produces = "application/json")
@@ -87,6 +103,32 @@ public class PatientController {
             HandleWebException.handleWebException(exception, logger);
         }
         return new JsonResponse<List<PatientExt>>(Constant.STATUS_SUCCESS, patientExts);
+    }
+
+    @RequestMapping(value = "/patient/getMedicine", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    JsonResponse<Integer> getMedicine(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody SaveMedicine saveMedicine) {
+        try {
+            patientService.getMedicine(saveMedicine.getPrescriptionIDs());
+            response.setStatus(IHttpStateCode.OK);
+        } catch (Exception exception) {
+            HandleWebException.handleWebException(exception, logger);
+        }
+        return new JsonResponse<Integer>(Constant.STATUS_SUCCESS);
+    }
+
+    @RequestMapping(value = "/user/deletePatient", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    JsonResponse<Integer> deletePatient(HttpServletRequest request, HttpServletResponse response,
+            @RequestBody int patientID) {
+        try {
+            patientService.deletePatientByID(patientID);
+            response.setStatus(IHttpStateCode.OK);
+        } catch (Exception exception) {
+            HandleWebException.handleWebException(exception, logger);
+        }
+        return new JsonResponse<Integer>(Constant.STATUS_SUCCESS);
     }
 
 

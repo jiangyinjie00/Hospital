@@ -15,7 +15,6 @@ $scope.selectedRows = [];
     };
           
     $scope.init = function() {
-        $scope.refresh();
     };
             
    $scope.gridPrescriptions.columnDefs = [
@@ -78,9 +77,13 @@ $scope.selectedRows = [];
                 width:110
             },
           ];
-    $scope.refresh = function() {
-        restClient.post(RestfulAPI.PATIENT_PATIENTINFO, {}, "20140412001").then(function() {
+    $scope.searchPatient = function() {
+        restClient.post(RestfulAPI.PATIENT_PATIENTINFO_MEDICINE, {}, "20140412001").then(function() {
             $scope.list = restClient.getResponse();
+            if (null == $scope.list) {
+            	alert("没有未完成处方单");
+            	return false;
+            }
             var prescriptions = $scope.list.patientPrescriptionExts;
             for (var index in prescriptions) {
                 prescriptions[index].name = $scope.list.name;
@@ -89,5 +92,30 @@ $scope.selectedRows = [];
             }
             $scope.prescriptions = prescriptions;
         });
+    };
+    
+    $scope.updateMedicine = function() {
+    	var patient = $scope.list;
+    	var prescriptions = patient.patientPrescriptionExts;
+    	var prescriptionIDs = [];
+    	if (null != prescriptions) {
+    		for (var index in prescriptions) {
+    			prescriptionIDs.push(prescriptions[index].patientprescriptionid);
+    		}
+    	} else {
+    		return false;
+    	}
+    	var condition = {};
+    	condition.prescriptionIDs = prescriptionIDs;
+    	restClient.post(RestfulAPI.PATIENT_UPDATEMEDICINE, {}, condition).then(function() {
+    		alert("取药成功");
+    		$scope.clearText();
+    	});
+    };
+    
+    $scope.clearText = function() {
+    	$scope.list = null;
+    	$scope.prescriptions = null;
+    	$scope.number = "";
     };
 }]);

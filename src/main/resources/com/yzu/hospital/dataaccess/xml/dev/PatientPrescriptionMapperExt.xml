@@ -37,6 +37,16 @@
         WHERE
             PatientPrescriptionID = #{patientprescriptionid}
     </select>
+    
+    <update id="updateMedicine">
+        UPDATE PatientPrescription As _PatientPrescription 
+        SET _PatientPrescription.NotTimes = 0
+        WHERE _PatientPrescription.PatientPrescriptionID IN 
+        <foreach collection="prescriptionIDs" item="prescriptionID" open="(" close=")" separator="," >
+             #{prescriptionID}
+        </foreach>
+    </update>
+    
     <insert id="insertPatientPrescription" parameterType="PatientPrescriptionExt">
         <selectKey resultType="java.lang.Integer" keyProperty="patientprescriptionid" order="BEFORE">
             SELECT LAST_INSERT_ID()

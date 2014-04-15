@@ -16,4 +16,10 @@ public interface PatientService {
     List<PatientExt> queryPatientByName(String name, int people);
 
     PatientExt queryPatientExtByNumber(String number, int condition);
+
+    PatientExt getPatientMedicineByNumber(String number);
+
+    void getMedicine(int[] prescriptionIDs);
+
+    void deletePatientByID(int patientID);
 }

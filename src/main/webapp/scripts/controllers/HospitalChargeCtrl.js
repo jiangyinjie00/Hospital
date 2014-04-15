@@ -1,6 +1,6 @@
 angular.module('hospitalApp.controller')
 
-.controller('HospitalChargeCtrl', ['$scope', 'restClient',function($scope, restClient) {
+.controller('HospitalChargeCtrl', ['$scope', 'restClient', '$rootScope', function($scope, restClient, $rootScope) {
 $scope.selectedRows = [];
     
     $scope.gridPrescriptions = {
@@ -20,6 +20,7 @@ $scope.selectedRows = [];
     };
           
     $scope.init = function() {
+    	$scope.number = $scope.number = parseInt(10000000000 * Math.random());
         $scope.refresh();
     };
             
@@ -76,15 +77,14 @@ $scope.selectedRows = [];
                 	width:75
                 },
                 {
-                	field: 'advancepay',
+                	field: 'afterPay',
                 	displayName: "补交",
                 	//headerCellTemplate: $scope.headerCellTemplate,
                 	width:75
                 },
                 {
-                	field: 'userid',
+                	field: 'debt',
                 	displayName: "是否欠款",
-                	cellTemplate: template_resume_operation,
                 	//headerCellTemplate: $scope.headerCellTemplate,
                 	width:75
                 },
@@ -194,9 +194,60 @@ $scope.selectedRows = [];
               ];
     $scope.refresh = function() {
         restClient.post(RestfulAPI.PATIENT_PATIENTINFO, {}, "20140412001").then(function() {
-            $scope.list = restClient.getResponse();
+        	$scope.list = restClient.getResponse();
+        	$scope.afterPay = $scope.list.afterPay;
+        	$scope.total = $scope.list.used;
+        	$scope.selfPay = $scope.list.selfpay;
             $scope.patient = [];
             $scope.patient[0] = $scope.list;
+        });
+    };
+    
+    $scope.moneyChange = function() {
+    	$scope.charge = $scope.money - $scope.afterPay;
+    };
+    
+    $scope.clearText = function() {
+    	$scope.patient = null;
+    	$scope.list = null;
+    	$scope.afterPay = null;
+    	$scope.total = null;
+    	$scope.selfPay = null;
+    };
+    
+    $scope.saveMoney = function() {
+    	var receipt = {};
+    	receipt.patientid = $scope.list.patientid;
+    	receipt.cashierid = $rootScope.currentUser.cashierid;	
+    	receipt.number = $scope.number;
+    	receipt.money = $scope.afterPay;
+    	
+    	restClient.post(RestfulAPI.RECEIPT_SAVE, {}, receipt).then(function() {
+            alert("缴费成功");
+        });
+    };
+    
+    $scope.saveMoneyCharge = function() {
+    	var receipt = {};
+    	receipt.patientid = $scope.list.patientid;
+    	receipt.cashierid = $rootScope.currentUser.cashierid;	
+    	receipt.number = $scope.number;
+    	receipt.money = $scope.afterPay;
+    	
+    	restClient.post(RestfulAPI.RECEIPT_SAVE, {}, receipt).then(function() {
+    		alert("缴费成功");
+    		window.location.href = "/Hospital";
+    	});
+    };
+    
+    $scope.leavaHospital = function() {
+    	if ($scope.afterPay > 0.1) {
+    		alert("请先结算出院!");
+    		return false;
+    	}
+    	restClient.post(RestfulAPI.USER_LEAVA_HOSPITAL, {}, $scope.list.patientid).then(function() {
+            alert("出院成功!");
+            window.location.href = "/Hospital";
         });
     };
 }]);

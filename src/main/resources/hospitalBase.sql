@@ -17,10 +17,10 @@ VALUES
 
 
 /*****************Prescription*****************/
-INSERT INTO `Prescription` (`PrescriptionID`, `Number`, `Name`, `Price`, `PayCoefficient`, `Unit`)
+INSERT INTO `Prescription` (`PrescriptionID`, `Number`, `Name`, `Price`, `PayCoefficient`, `Unit`, `Category`)
 VALUES
-(1, '0304140001', '感冒冲剂', 13.11, 0.5, '包'),
-(2, '0304410002', '含片', 10, 0.7, '包');
+(1, '0304140001', '感冒冲剂', 13.11, 0.5, '包', '甲'),
+(2, '0304410002', '含片', 10, 0.7, '包', '甲');
 
 /*****************Project*****************/
 INSERT INTO `Project` (`ProjectID`, `Number`, `Name`, `Price`, `PayCoefficient`)

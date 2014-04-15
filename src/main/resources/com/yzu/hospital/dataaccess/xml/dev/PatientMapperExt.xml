@@ -54,7 +54,26 @@
             LEFT JOIN PatientProject AS _PatientProject ON _Patient.PatientID = _PatientProject.PatientID
             LEFT JOIN Project AS _Project ON _PatientProject.ProjectID = _Project.ProjectID
         WHERE
-            _Patient.Number = #{number}
+            _Patient.Number = #{number} AND _Patient.MarkForDelete = false
+    </select>
+    
+    <select id="getPatientMedicineByNumber" resultMap="PatientResultMap" parameterType="java.lang.String" >
+        SELECT 
+            <include refid="PatientColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.HospitalInfoMapperExt.HospitalInfoColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.PatientPrescriptionMapperExt.PatientPrescriptionColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.PrescriptionMapperExt.PrescriptionColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.PatientProjectMapperExt.PatientProjectColumn" />,
+            <include refid="com.yzu.hospital.dataaccess.mapper.ProjectMapperExt.ProjectColumn" />
+        FROM
+            Patient AS _Patient
+            LEFT JOIN HospitalInfo AS _HospitalInfo ON _Patient.PatientID = _HospitalInfo.PatientID
+            LEFT JOIN PatientPrescription AS _PatientPrescription ON _Patient.PatientID = _PatientPrescription.PatientID
+            LEFT JOIN Prescription AS _Prescription ON _PatientPrescription.PrescriptionID = _Prescription.PrescriptionID AND _PatientPrescription.NotTimes > 0
+            LEFT JOIN PatientProject AS _PatientProject ON _Patient.PatientID = _PatientProject.PatientID
+            LEFT JOIN Project AS _Project ON _PatientProject.ProjectID = _Project.ProjectID
+        WHERE
+            _Patient.Number = #{number} AND _Patient.MarkForDelete = false
     </select>
     
     <select id="queryPatientExtByNumber" resultMap="PatientResultMap" parameterType="map" >
@@ -73,7 +92,7 @@
             LEFT JOIN PatientProject AS _PatientProject ON _Patient.PatientID = _PatientProject.PatientID
             LEFT JOIN Project AS _Project ON _PatientProject.ProjectID = _Project.ProjectID
         WHERE
-            _HospitalInfo.Number = #{number}
+            _HospitalInfo.Number = #{number} AND _Patient.MarkForDelete = false
             <if test="condition != 2">
                 AND _PatientPrescription.MarkForDelete = #{condition}
                 AND _PatientProject.MarkForDelete = #{condition}
@@ -88,7 +107,7 @@
             Patient AS _Patient
             LEFT JOIN HospitalInfo AS _HospitalInfo ON _Patient.PatientID = _HospitalInfo.PatientID
         WHERE
-            _HospitalInfo.Number = #{number}
+            _HospitalInfo.Number = #{number} AND _Patient.MarkForDelete = false
     </select>
     
     <select id="queryPatientByName" resultMap="PatientResultMap" parameterType="map" >
@@ -99,7 +118,7 @@
             Patient AS _Patient
             LEFT JOIN HospitalInfo AS _HospitalInfo ON _Patient.PatientID = _HospitalInfo.PatientID
         WHERE
-            _Patient.name = #{name}
+            _Patient.name = #{name} AND _Patient.MarkForDelete = false
         <if test="condition != null">
             AND _Patient.sex = #{condition}
         </if>
@@ -132,6 +151,12 @@
      <update id="updateAdvancePay">
          UPDATE Patient AS _Patient 
          SET _Patient.AdvancePay = _Patient.AdvancePay + #{money}
+         WHERE _Patient.PatientID = #{patientID}
+     </update>
+     
+     <update id="markForDelete">
+         UPDATE Patient AS _Patient 
+         SET _Patient.MarkForDelete = true
          WHERE _Patient.PatientID = #{patientID}
      </update>
 </mapper>

@@ -38,6 +38,15 @@
             PatientProjectID = #{patientprojectid}
     </select>
     
+    <update id="updateMedicine">
+        UPDATE PatientProject As _PatientProject 
+        SET _PatientProject.NotTimes = 0
+        WHERE _PatientProject.PatientProjectID IN 
+        <foreach collection="projectIDs" item="projectID" open="(" close=")" separator="," >
+             #{projectID}
+        </foreach>
+    </update>
+    
     <insert id="insertPatientProject" parameterType="PatientProjectExt">
         <selectKey resultType="java.lang.Integer" keyProperty="patientprojectid" order="BEFORE">
             SELECT LAST_INSERT_ID()

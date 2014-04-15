@@ -7,7 +7,7 @@ angular.module('hospitalApp.controller')
 	$scope.logout = function() {
 		restClient.post(RestfulAPI.LOGOUT, {}).then(function(){
 			$rootScope.currentUser = {};
-	    	window.location.href = "/Recruit";
+	    	window.location.href = "/Hospital";
 	    });
 	};
 	

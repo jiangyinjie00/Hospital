@@ -3,7 +3,7 @@
 	    <div id="cashier">
 	        <label>收费员编号：</label><input type="text" ng-model="currentUser.number" readonly>
 	        <label>收费员姓名：</label><input type="text" ng-model="currentUser.name" readonly>
-	        <label>收费编号：</label><input type="text" readonly>
+	        <label>收费编号：</label><input ng-model="number" type="text" readonly>
 	    </div>
 	    <div id="patient-cost">
 	        <div id="patient">
@@ -11,10 +11,10 @@
 	            <button ng-click="searchPatient()">确认</button>
 	        </div>
 	        <div id="cost">
-	            <label>合计：</label><input type="text" readonly>
-	            <label>自付：</label><input type="text" readonly>
-	            <label>支付：</label><input type="text" >
-	            <label>找零：</label><input type="text" >
+	            <label>合计：</label><input ng-model="total" type="text" readonly>
+	            <label>自付：</label><input ng-model="selfPay" type="text" readonly>
+	            <label>支付：</label><input ng-model="money" ng-change="moneyChange()" type="text" >
+	            <label>找零：</label><input ng-model="charge" type="text" >
 	        </div>
 	    </div>
 	    
@@ -37,11 +37,11 @@
     <div class="right right-button">
         <div>
             <ul>
-                <li><button>中止收费</button></li>
-                <li><button>保存收费</button></li>
+                <li><button ng-click="clearText()">中止收费</button></li>
+                <li><button ng-click="saveMoneyCharge()">保存收费</button></li>
                 <li><a href="#/queryPatient"><button>患者查询存</button></a></li>
                 <li><a href="#/advancePay"><button>交预交款</button></a></li>
-                <li><button>退出收费</button></li>
+                <li><a href="/Hospital"><button>退出收费</button></a></li>
             </ul>
         </div>
     </div>

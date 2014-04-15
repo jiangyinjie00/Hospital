@@ -21,4 +21,8 @@ public interface PatientMapperExt extends PatientMapper {
     List<PatientExt> queryPatientByName(@Param("name")String name, @Param("condition")String condition);
 
     PatientExt queryPatientExtByNumber(@Param("number")String number, @Param("condition")int condition);
+
+    PatientExt getPatientMedicineByNumber(@Param("number")String number);
+
+    void markForDelete(@Param("patientID")int patientID);
 }
